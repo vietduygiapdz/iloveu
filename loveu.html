@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Do you love me?</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background-color: #ffebf0;
+      overflow: hidden;
+      position: relative;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #d63384;
+      text-shadow: 2px 2px 5px white;
+    }
+    #buttonContainer {
+      position: relative;
+      width: 400px;
+      height: 150px;
+    }
+    #yesButton, #noButton {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      position: absolute;
+    }
+    #yesButton {
+      left: 50px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    #noButton {
+      left: 250px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    #thankYouMessage {
+      font-size: 24px;
+      color: #d63384;
+      display: none;
+      margin-top: 20px;
+      font-weight: bold;
+      text-shadow: 2px 2px 5px white;
+    }
+    /* Trái tim */
+    .heart {
+      position: absolute;
+      color: red;
+      font-size: 20px;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      from {
+        transform: translateY(-100vh);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Do you love me?</h1>
+  <div id="buttonContainer">
+    <button id="yesButton">Yes</button>
+    <button id="noButton">No</button>
+  </div>
+  <div id="thankYouMessage">Cảm ơn! ❤️</div>
+
+  <script>
+    const noButton = document.getElementById('noButton');
+    const yesButton = document.getElementById('yesButton');
+    const thankYouMessage = document.getElementById('thankYouMessage');
+    const buttonContainer = document.getElementById('buttonContainer');
+
+    // Khi di chuột vào nút "No", nó sẽ nhảy ra xa hơn
+    noButton.addEventListener('mouseenter', () => {
+      const containerWidth = buttonContainer.clientWidth;
+      const containerHeight = buttonContainer.clientHeight;
+      const buttonWidth = noButton.offsetWidth;
+      const buttonHeight = noButton.offsetHeight;
+
+      // Tạo vị trí ngẫu nhiên nhưng vẫn nằm trong vùng container
+      const newLeft = Math.random() * (containerWidth - buttonWidth);
+      const newTop = Math.random() * (containerHeight - buttonHeight);
+
+      noButton.style.left = newLeft + "px";
+      noButton.style.top = newTop + "px";
+    });
+
+    // Khi nhấn "Yes", chữ "Yes" vào giữa màn hình, hiện thông báo và trái tim rơi
+    yesButton.addEventListener('click', () => {
+      yesButton.style.position = "fixed";
+      yesButton.style.left = "50%";
+      yesButton.style.top = "50%";
+      yesButton.style.transform = "translate(-50%, -50%)";
+      yesButton.style.fontSize = "24px";
+      yesButton.style.padding = "15px 30px";
+
+      thankYouMessage.style.display = 'block';
+      noButton.style.display = 'none';
+
+      createHearts();
+    });
+
+    // Hàm tạo nhiều trái tim rơi
+    function createHearts() {
+      setInterval(() => {
+        for (let i = 0; i < 5; i++) { // Tăng số lượng trái tim mỗi lần tạo
+          const heart = document.createElement("div");
+          heart.innerHTML = "❤️";
+          heart.classList.add("heart");
+          heart.style.left = Math.random() * window.innerWidth + "px";
+          heart.style.top = "-20px";
+          heart.style.fontSize = Math.random() * 30 + 10 + "px"; // Tăng kích thước ngẫu nhiên
+          heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+
+          document.body.appendChild(heart);
+
+          setTimeout(() => {
+            heart.remove();
+          }, 5000);
+        }
+      }, 200); // Giảm thời gian tạo để mật độ dày hơn
+    }
+  </script>
+</body>
+</html>
