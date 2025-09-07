@@ -20,15 +20,19 @@
       background-color: #ffebf0;
       overflow: hidden;
       position: relative;
+      text-align: center;
     }
     h1 {
       margin-bottom: 20px;
       color: #d63384;
       text-shadow: 2px 2px 5px white;
+      padding: 0 10px;
+      word-break: break-word;
     }
     #buttonContainer {
       position: relative;
-      width: 400px;
+      width: 100%;
+      max-width: 400px;
       height: 150px;
     }
     #yesButton, #noButton {
@@ -38,7 +42,7 @@
       position: absolute;
     }
     #yesButton {
-      left: 50px;
+      left: 20%;
       top: 50%;
       transform: translateY(-50%);
       background-color: #28a745;
@@ -47,7 +51,7 @@
       border-radius: 5px;
     }
     #noButton {
-      left: 250px;
+      left: 60%;
       top: 50%;
       transform: translateY(-50%);
       background-color: #dc3545;
@@ -56,14 +60,14 @@
       border-radius: 5px;
     }
     #thankYouMessage {
-      font-size: 24px;
+      font-size: 22px;
       color: #d63384;
       display: none;
       margin-top: 20px;
       font-weight: bold;
       text-shadow: 2px 2px 5px white;
+      padding: 0 10px;
     }
-    /* Trái tim */
     .heart {
       position: absolute;
       color: red;
@@ -71,14 +75,8 @@
       animation: fall linear infinite;
     }
     @keyframes fall {
-      from {
-        transform: translateY(-100vh);
-        opacity: 1;
-      }
-      to {
-        transform: translateY(100vh);
-        opacity: 0;
-      }
+      from { transform: translateY(-100vh); opacity: 1; }
+      to { transform: translateY(100vh); opacity: 0; }
     }
   </style>
 </head>
@@ -96,22 +94,25 @@
     const thankYouMessage = document.getElementById('thankYouMessage');
     const buttonContainer = document.getElementById('buttonContainer');
 
-    // Khi di chuột vào nút "No", nó sẽ nhảy ra xa hơn
-    noButton.addEventListener('mouseenter', () => {
+    // Hàm random vị trí cho nút No
+    function moveNoButton() {
       const containerWidth = buttonContainer.clientWidth;
       const containerHeight = buttonContainer.clientHeight;
       const buttonWidth = noButton.offsetWidth;
       const buttonHeight = noButton.offsetHeight;
 
-      // Tạo vị trí ngẫu nhiên nhưng vẫn nằm trong vùng container
       const newLeft = Math.random() * (containerWidth - buttonWidth);
       const newTop = Math.random() * (containerHeight - buttonHeight);
 
       noButton.style.left = newLeft + "px";
       noButton.style.top = newTop + "px";
-    });
+    }
 
-    // Khi nhấn "Yes", chữ "Yes" vào giữa màn hình, hiện thông báo và trái tim rơi
+    // Cho nút No chạy cả khi hover lẫn click
+    noButton.addEventListener('mouseenter', moveNoButton);
+    noButton.addEventListener('click', moveNoButton);
+
+    // Khi nhấn Yes
     yesButton.addEventListener('click', () => {
       yesButton.style.position = "fixed";
       yesButton.style.left = "50%";
@@ -126,27 +127,22 @@
       createHearts();
     });
 
-    // Hàm tạo nhiều trái tim rơi
     function createHearts() {
       setInterval(() => {
-        for (let i = 0; i < 5; i++) { // Tăng số lượng trái tim mỗi lần tạo
+        for (let i = 0; i < 5; i++) {
           const heart = document.createElement("div");
           heart.innerHTML = "❤️";
           heart.classList.add("heart");
           heart.style.left = Math.random() * window.innerWidth + "px";
           heart.style.top = "-20px";
-          heart.style.fontSize = Math.random() * 30 + 10 + "px"; // Tăng kích thước ngẫu nhiên
+          heart.style.fontSize = Math.random() * 30 + 10 + "px";
           heart.style.animationDuration = Math.random() * 2 + 3 + "s";
 
           document.body.appendChild(heart);
-
-          setTimeout(() => {
-            heart.remove();
-          }, 5000);
+          setTimeout(() => heart.remove(), 5000);
         }
-      }, 200); // Giảm thời gian tạo để mật độ dày hơn
+      }, 200);
     }
   </script>
 </body>
 </html>
-
